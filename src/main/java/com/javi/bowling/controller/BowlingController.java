@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class BowlingController {
     @RequestMapping(value = "/start_game", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity startGame() {
-
+        return ResponseEntity.ok("");   //TODO: Generate an actual response when we have game generation working!
     }
 }

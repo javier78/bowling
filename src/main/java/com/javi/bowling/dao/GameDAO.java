@@ -64,6 +64,11 @@ public class GameDAO implements IDAO<Game> {
         return game;
     }
 
+//    public Game initiateNewGame() {
+//        Connection conn = DatabaseUtil.connect();
+//        Game game = new Game();
+//    }
+
     @Override
     public boolean insert(Game row) {
         return false;
