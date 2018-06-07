@@ -10,7 +10,7 @@ public class DatabaseUtil {
         Connection conn = null;
         try {
             // model parameters
-            String url = "jdbc:sqlite:bowling.model";
+            String url = "jdbc:sqlite:bowling.sql";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
 
