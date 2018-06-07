@@ -11,6 +11,8 @@ public class GameDAO implements IDAO<Game> {
 
     private Connection conn;
 
+    public GameDAO(){}
+
     /**
      * This constructor is only meant to be used for testing!
      * @param connection A mocked connection object.
@@ -60,17 +62,5 @@ public class GameDAO implements IDAO<Game> {
             e.printStackTrace();
         }
         return game;
-    }
-
-    public List<Game> where(String predicate) {
-//        List<Game> games = new ArrayList<>();
-//        if(conn == null) {
-//            conn = DatabaseUtil.connect();
-//        }
-//        try {
-//            String sql = "SELECT * FROM Games WHERE " + predicate;
-//            PreparedStatement stmt = conn.prepareStatement(sql);
-//        }
-        return null;
     }
 }

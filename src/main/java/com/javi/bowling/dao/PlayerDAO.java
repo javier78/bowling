@@ -11,6 +11,8 @@ public class PlayerDAO implements IDAO<Player> {
 
     private Connection conn;
 
+    public PlayerDAO(){};
+
     /* package-private */ PlayerDAO(Connection connection) {
         conn = connection;
     }
