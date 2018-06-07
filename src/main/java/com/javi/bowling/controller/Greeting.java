@@ -1,4 +1,4 @@
-package com.javi.bowling.test;
+package com.javi.bowling.controller;
 
 public class Greeting {
     private final long id;

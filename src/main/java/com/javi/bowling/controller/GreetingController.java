@@ -1,8 +1,8 @@
-package com.javi.bowling.test;
+package com.javi.bowling.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.javi.bowling.db.DatabaseUtil;
+import com.javi.bowling.model.DatabaseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
