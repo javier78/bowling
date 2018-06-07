@@ -61,4 +61,15 @@ public class PlayerDAO implements IDAO<Player> {
         }
         return player;
     }
+
+    @Override
+    public boolean insert(Player row) {
+        return false;
+    }
+
+    @Override
+    public boolean update(Player row) {
+        return false;
+    }
+
 }

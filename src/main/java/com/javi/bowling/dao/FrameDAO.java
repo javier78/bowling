@@ -90,4 +90,14 @@ public class FrameDAO implements IDAO<Frame> {
         }
         return frame;
     }
+
+    @Override
+    public boolean insert(Frame row) {
+        return false;
+    }
+
+    @Override
+    public boolean update(Frame row) {
+        return false;
+    }
 }

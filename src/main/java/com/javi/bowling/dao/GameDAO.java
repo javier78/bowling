@@ -63,4 +63,14 @@ public class GameDAO implements IDAO<Game> {
         }
         return game;
     }
+
+    @Override
+    public boolean insert(Game row) {
+        return false;
+    }
+
+    @Override
+    public boolean update(Game row) {
+        return false;
+    }
 }

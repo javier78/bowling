@@ -80,4 +80,14 @@ public class ShotDAO implements IDAO<Shot> {
         }
         return shot;
     }
+
+    @Override
+    public boolean insert(Shot row) {
+        return false;
+    }
+
+    @Override
+    public boolean update(Shot row) {
+        return false;
+    }
 }

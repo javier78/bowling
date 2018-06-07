@@ -20,10 +20,6 @@ public interface IDAO<E> {
      */
     E findById(int id);
 
-//    /**
-//     * Finds all the records that satisfy the given predicate
-//     * @param predicate the predicate to filter on
-//     * @return A Collection of filtered records
-//     */
-//    List<E> where(String predicate);
+    boolean insert(E row);
+    boolean update(E row);
 }
