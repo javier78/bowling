@@ -64,14 +64,32 @@ public class GameDAO implements IDAO<Game> {
         return game;
     }
 
-//    public Game initiateNewGame() {
-//        Connection conn = DatabaseUtil.connect();
-//        Game game = new Game();
-//    }
+    /**
+     * Utility method to facilitate creating a game
+     * @return A Gam object with its id field set.
+     */
+    public Game initiateNewGame() {
+        Game game = new Game();
+        int id = insert(game);
+        game.setId(id);
+        return game;
+    }
 
     @Override
-    public boolean insert(Game row) {
-        return false;
+    public int insert(Game row) {
+        Connection conn = DatabaseUtil.connect();
+        int generatedKey = 0;
+        try {
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Games (id) VALUES(NULL)", Statement.RETURN_GENERATED_KEYS);
+            stmt.execute();
+            ResultSet resultSet = stmt.getGeneratedKeys();
+            if(resultSet.next()) {
+                generatedKey = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return generatedKey;
     }
 
     @Override

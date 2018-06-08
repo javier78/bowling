@@ -82,8 +82,8 @@ public class ShotDAO implements IDAO<Shot> {
     }
 
     @Override
-    public boolean insert(Shot row) {
-        return false;
+    public int insert(Shot row) {
+        return 0;
     }
 
     @Override

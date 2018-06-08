@@ -20,6 +20,17 @@ public interface IDAO<E> {
      */
     E findById(int id);
 
-    boolean insert(E row);
+    /**
+     * Inserts object E into the database
+     * @param row The row to be inserted. The id field should not be set when invoking this method
+     * @return the id for the row inserted into the database
+     */
+    int insert(E row);
+
+    /**
+     * Updates the row object in the database
+     * @param row The row object to be updated
+     * @return true if the update succeeded, false otherwise.
+     */
     boolean update(E row);
 }
