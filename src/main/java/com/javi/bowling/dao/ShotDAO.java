@@ -3,6 +3,7 @@ package com.javi.bowling.dao;
 import com.javi.bowling.model.DatabaseUtil;
 import com.javi.bowling.model.Frame;
 import com.javi.bowling.model.Shot;
+import org.apache.commons.dbutils.DbUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,26 +11,16 @@ import java.util.List;
 
 public class ShotDAO implements IDAO<Shot> {
 
-    private Connection conn;
-
-    /**
-     * This constructor is only meant to be used for testing!
-     * @param connection A mocked connection object.
-     */
-    /* package-private */ ShotDAO(Connection connection) {
-        conn = connection;
-    }
-
     @Override
     public List<Shot> findAll() {
         List<Shot> shots = new ArrayList<>();
-        if(conn == null) {
-            conn = DatabaseUtil.connect();
-        }
+        Connection conn = null;
+        Statement statement = null;
         try {
+            conn = DatabaseUtil.connect();
             String sql = "SELECT * FROM Shots";
-            Statement stmt = conn.createStatement();
-            ResultSet resultSet = stmt.executeQuery(sql);
+            statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
             while(resultSet.next()) {
                 Shot shot = new Shot();
                 int id = resultSet.getInt("id");
@@ -43,29 +34,32 @@ public class ShotDAO implements IDAO<Shot> {
                 shot.setShotValue(resultSet.getInt("shot_value"));
                 shots.add(shot);
             }
-            conn.close();
         } catch(SQLException e) {
             e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
         }
         return shots;
     }
 
     @Override
     public Shot findById(int id) {
-        Shot shot = new Shot();
-        if(conn == null) {
-            conn = DatabaseUtil.connect();
-        }
+        Shot shot = null;
+        Connection conn = null;
+        PreparedStatement statement = null;
         try {
+            conn = DatabaseUtil.connect();
             String sql = "SELECT * FROM Shots WHERE id = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, id);
-            ResultSet resultSet = stmt.executeQuery();
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
             resultSet.next();
 
             FrameDAO frameDAO = new FrameDAO();
             Frame frame = frameDAO.findById(resultSet.getInt("frame_id"));
 
+            shot = new Shot();
             shot.setId(resultSet.getInt("id"));
             shot.setFrame(frame);
             shot.setShotValue(resultSet.getInt("shot_value"));
@@ -74,16 +68,104 @@ public class ShotDAO implements IDAO<Shot> {
             if(resultSet.next()) {
                 System.out.println("This shouldn't return more than 1 record.");
             }
-            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
         }
+        return shot;
+    }
+
+    public Shot getPreviousShot(Shot shot) {
+        if(shot.getShotNumber() > 1) {
+            return findByFrameNumberAndShotNumber(shot.getFrame(), shot.getShotNumber() - 1);
+        } else {
+            return null;
+        }
+    }
+
+    public Shot findByFrameNumberAndShotNumber(Frame frame, int shotNumber) {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        Shot shot = null;
+        try {
+            conn = DatabaseUtil.connect();
+            String sql = "SELECT * FROM Shots WHERE frame_id = ? AND shot_number = ?";
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, frame.getId());
+            statement.setInt(2, shotNumber);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()) {
+                shot = new Shot();
+                shot.setId(resultSet.getInt("id"));
+                shot.setFrame(frame);
+                shot.setShotNumber(resultSet.getInt("shot_number"));
+                shot.setShotValue(resultSet.getInt("shot_value"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
+        }
+        return shot;
+    }
+
+    private int getNextShotNumber(Frame frame) {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        int count = -1;
+        try {
+            conn = DatabaseUtil.connect();
+            String sql = "SELECT COUNT(*) FROM Shots WHERE frame_id = ?";
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, frame.getId());
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            count = resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
+        }
+        return count + 1;
+    }
+
+    public Shot createShot(Frame frame, int shotValue) {
+        Shot shot = new Shot();
+        shot.setFrame(frame);
+        shot.setShotNumber(getNextShotNumber(frame));
+        shot.setShotValue(shotValue);
+        int id = insert(shot);
+        shot.setId(id);
         return shot;
     }
 
     @Override
     public int insert(Shot row) {
-        return 0;
+        Connection conn = null;
+        PreparedStatement statement = null;
+        int generatedKey = 0;
+        try {
+            conn = DatabaseUtil.connect();
+            statement = conn.prepareStatement("INSERT INTO Shots (frame_id, shot_number, shot_value) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, row.getFrame().getId());
+            statement.setInt(2, row.getShotNumber());
+            statement.setInt(3, row.getShotValue());
+            statement.execute();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if(resultSet.next()) {
+                generatedKey = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
+        }
+        return generatedKey;
     }
 
     @Override

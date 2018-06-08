@@ -5,34 +5,23 @@ import com.javi.bowling.model.DatabaseUtil;
 import com.javi.bowling.model.Frame;
 import com.javi.bowling.model.Game;
 import com.javi.bowling.model.Player;
+import org.apache.commons.dbutils.DbUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FrameDAO implements IDAO<Frame> {
-    private Connection conn;
-
-    public FrameDAO() {}
-
-    /**
-     * This constructor is only meant to be used for testing!
-     * @param connection A mocked connection object.
-     */
-    /* package-private */ FrameDAO(Connection connection) {
-        conn = connection;
-    }
-
     @Override
     public List<Frame> findAll() {
         List<Frame> frames = new ArrayList<>();
-        if(conn == null) {
-            conn = DatabaseUtil.connect();
-        }
+        Connection conn = null;
+        Statement statement = null;
         try {
+            conn = DatabaseUtil.connect();
             String sql = "SELECT * FROM Frames;";
-            Statement stmt = conn.createStatement();
-            ResultSet resultSet = stmt.executeQuery(sql);
+            statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
             while(resultSet.next()) {
                 Frame frame = new Frame();
                 int id = resultSet.getInt("id");
@@ -50,9 +39,11 @@ public class FrameDAO implements IDAO<Frame> {
                 frame.setFrameType(FrameType.getTypeByName(resultSet.getString("frame_type")));
                 frames.add(frame);
             }
-            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
         }
         return frames;
     }
@@ -60,14 +51,14 @@ public class FrameDAO implements IDAO<Frame> {
     @Override
     public Frame findById(int id) {
         Frame frame = new Frame();
-        if(conn == null) {
-            conn = DatabaseUtil.connect();
-        }
+        Connection conn = null;
+        PreparedStatement statement = null;
         try {
+            conn = DatabaseUtil.connect();
             String sql = "SELECT * FROM Frames WHERE id = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, id);
-            ResultSet resultSet = stmt.executeQuery();
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             frame.setId(resultSet.getInt("id"));
 
@@ -87,17 +78,134 @@ public class FrameDAO implements IDAO<Frame> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
         }
+        return frame;
+    }
+
+    /**
+     * Gets the Frame record that has a frame_type of CURRENT.
+     * @param game the game_id to search on
+     * @param player the player_id to search on.
+     * @return the Frame record that has a frame_type of CURRENT, null if no such frame exists
+     */
+    public Frame getCurrentFrame(Game game, Player player) {
+       Connection conn = null;
+       PreparedStatement statement = null;
+       Frame frame = null;
+
+       try {
+           conn = DatabaseUtil.connect();
+           String sql = "SELECT * FROM Frames WHERE game_id = ? AND player_id = ? AND frame_type = ?";
+           statement = conn.prepareStatement(sql);
+           statement.setInt(1, game.getId());
+           statement.setInt(2, player.getId());
+           statement.setString(3, FrameType.CURRENT.toString());
+           ResultSet resultSet = statement.executeQuery();
+           if(resultSet.next()) {
+               frame = new Frame();
+               frame.setId(resultSet.getInt("id"));
+               frame.setPlayer(player);
+               frame.setGame(game);
+               frame.setFrameNumber(resultSet.getInt("frame_number"));
+               frame.setFrameType(FrameType.getTypeByName(resultSet.getString("frame_type")));
+           }
+       } catch (SQLException e) {
+           e.printStackTrace();
+       } finally {
+           DbUtils.closeQuietly(statement);
+           DbUtils.closeQuietly(conn);
+       }
+       return frame;
+    }
+
+    /**
+     * When creating a new frame for a given player and game, this needs to be called in order to determine the next frame in the sequence.
+     * @param game The game_id belonging to the frame group
+     * @param player the player_id belonging to the frame group
+     * @return the next frame number in the sequence.
+     */
+    private int getNextFrameNumber(Game game, Player player) {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        int count = -1;
+        try {
+            conn = DatabaseUtil.connect();
+            String sql = "SELECT COUNT(*) FROM Frames WHERE game_id = ? AND player_id = ?";
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, game.getId());
+            statement.setInt(2, player.getId());
+
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            count = resultSet.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
+        }
+        return count + 1;
+    }
+
+    public Frame createFrame(Game game, Player player) {
+        Frame frame = new Frame();
+        frame.setGame(game);
+        frame.setPlayer(player);
+        frame.setFrameNumber(getNextFrameNumber(game, player));
+        frame.setFrameType(FrameType.CURRENT);
+        int id = insert(frame);
+        frame.setId(id);
         return frame;
     }
 
     @Override
     public int insert(Frame row) {
-        return 0;
+        Connection conn = null;
+        PreparedStatement statement = null;
+        int generatedKey = 0;
+        try {
+            conn = DatabaseUtil.connect();
+            statement = conn.prepareStatement("INSERT INTO Frames (game_id, player_id, frame_number, frame_type) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, row.getGame().getId());
+            statement.setInt(2, row.getPlayer().getId());
+            statement.setInt(3, row.getFrameNumber());
+            statement.setString(4, row.getFrameType().toString());
+            statement.execute();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if(resultSet.next()) {
+                generatedKey = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
+        }
+        return generatedKey;
     }
 
     @Override
     public boolean update(Frame row) {
-        return false;
+        Connection conn = null;
+        PreparedStatement statement = null;
+        boolean successful = false;
+        try {
+            conn = DatabaseUtil.connect();
+            statement = conn.prepareStatement("UPDATE Frames SET frame_number = ?, frame_type = ? WHERE id = ?");
+            statement.setInt(1, row.getFrameNumber());
+            statement.setString(2, row.getFrameType().toString());
+            statement.setInt(3, row.getId());
+            successful = statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
+        }
+        return successful;
     }
 }

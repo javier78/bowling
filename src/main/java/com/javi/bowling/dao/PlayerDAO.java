@@ -1,7 +1,10 @@
 package com.javi.bowling.dao;
 
+import com.javi.bowling.exception.GameAlreadyStartedException;
 import com.javi.bowling.model.DatabaseUtil;
+import com.javi.bowling.model.Game;
 import com.javi.bowling.model.Player;
+import org.apache.commons.dbutils.DbUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,33 +12,27 @@ import java.util.List;
 
 public class PlayerDAO implements IDAO<Player> {
 
-    private Connection conn;
-
-    public PlayerDAO(){};
-
-    /* package-private */ PlayerDAO(Connection connection) {
-        conn = connection;
-    }
-
     @Override
     public List<Player> findAll() {
         List<Player> players = new ArrayList<>();
-        if(conn == null) {
-            conn = DatabaseUtil.connect();
-        }
+        Connection conn = null;
+        Statement statement = null;
         try {
             String sql = "SELECT * FROM Players;";
-            Statement stmt = conn.createStatement();
-            ResultSet resultSet = stmt.executeQuery(sql);
+            conn = DatabaseUtil.connect();
+            statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
             while(resultSet.next()) {
                 Player player = new Player();
                 int id = resultSet.getInt("id");
                 player.setId(id);
                 players.add(player);
             }
-            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
         }
         return players;
     }
@@ -43,28 +40,64 @@ public class PlayerDAO implements IDAO<Player> {
     @Override
     public Player findById(int id) {
         Player player = new Player();
-
-        if(conn == null) {
-            conn = DatabaseUtil.connect();
-        }
+        Connection conn = null;
+        PreparedStatement statement = null;
         try {
             String sql = "SELECT * FROM Players WHERE Players.id = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, id);
-            ResultSet resultSet = stmt.executeQuery();
+            conn = DatabaseUtil.connect();
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             player.setId(resultSet.getInt("id"));
             player.setName(resultSet.getString("name"));
-            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
         }
         return player;
     }
 
+    public Player createPlayer(String name, int gameId) throws GameAlreadyStartedException {
+        GameDAO gameDAO = new GameDAO();
+        Game game = gameDAO.findById(gameId);
+        if(!gameDAO.isGameStarted(game)) {
+            Player player = new Player();
+            player.setName(name);
+            player.setGame(game);
+
+            int id = insert(player);
+            player.setId(id);
+            return player;
+        } else {
+            throw new GameAlreadyStartedException("Cannot add players to a game that has already begun.");
+        }
+    }
+
     @Override
     public int insert(Player row) {
-        return 0;
+        Connection conn = null;
+        PreparedStatement statement = null;
+        int generatedKey = 0;
+        try {
+            conn = DatabaseUtil.connect();
+            statement = conn.prepareStatement("INSERT INTO Players (`name`, `game_id`) VALUES(?, ?)", Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, row.getName());
+            statement.setInt(2, row.getGame().getId());
+            statement.execute();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if(resultSet.next()) {
+                generatedKey = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
+        }
+        return generatedKey;
     }
 
     @Override

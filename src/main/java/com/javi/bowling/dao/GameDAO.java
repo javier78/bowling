@@ -2,6 +2,7 @@ package com.javi.bowling.dao;
 
 import com.javi.bowling.model.DatabaseUtil;
 import com.javi.bowling.model.Game;
+import org.apache.commons.dbutils.DbUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,50 +10,40 @@ import java.util.List;
 
 public class GameDAO implements IDAO<Game> {
 
-    private Connection conn;
-
-    public GameDAO(){}
-
-    /**
-     * This constructor is only meant to be used for testing!
-     * @param connection A mocked connection object.
-     */
-    /* package-private */ GameDAO(Connection connection) {
-        conn = connection;
-    }
-
     public List<Game> findAll() {
         List<Game> games = new ArrayList<>();
-        if(conn == null) {
-            conn = DatabaseUtil.connect();
-        }
+        Connection conn = null;
+        Statement statement = null;
         try {
             String sql = "SELECT * FROM Games;";
-            Statement stmt = conn.createStatement();
-            ResultSet resultSet = stmt.executeQuery(sql);
+            conn = DatabaseUtil.connect();
+            statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
             while(resultSet.next()) {
                 Game game = new Game();
                 int id = resultSet.getInt("id");
                 game.setId(id);
                 games.add(game);
             }
-            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
         }
         return games;
     }
 
     public Game findById(int id) {
         Game game = new Game();
-        if(conn == null) {
-            conn = DatabaseUtil.connect();
-        }
+        Connection conn = null;
+        PreparedStatement statement = null;
         try {
             String sql = "SELECT * FROM Games WHERE Games.id = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, id);
-            ResultSet resultSet = stmt.executeQuery();
+            conn = DatabaseUtil.connect();
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             game.setId(resultSet.getInt("id"));
             if(resultSet.next()) {
@@ -60,13 +51,37 @@ public class GameDAO implements IDAO<Game> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
         }
         return game;
     }
 
+    public boolean isGameStarted(Game game) {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        try {
+            String sql = "SELECT COUNT(*) FROM Games JOIN Frames ON (Games.id = Frames.game_id) WHERE Games.id = ?";
+            conn = DatabaseUtil.connect();
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, game.getId());
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int count = resultSet.getInt(1);
+            return count > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
+        }
+        return true;
+    }
+
     /**
      * Utility method to facilitate creating a game
-     * @return A Gam object with its id field set.
+     * @return A Game object with its id field set.
      */
     public Game initiateNewGame() {
         Game game = new Game();
@@ -77,12 +92,14 @@ public class GameDAO implements IDAO<Game> {
 
     @Override
     public int insert(Game row) {
-        Connection conn = DatabaseUtil.connect();
+        Connection conn = null;
+        PreparedStatement statement = null;
         int generatedKey = 0;
         try {
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Games (id) VALUES(NULL)", Statement.RETURN_GENERATED_KEYS);
-            stmt.execute();
-            ResultSet resultSet = stmt.getGeneratedKeys();
+            conn = DatabaseUtil.connect();
+            statement = conn.prepareStatement("INSERT INTO Games (id) VALUES(NULL)", Statement.RETURN_GENERATED_KEYS);
+            statement.execute();
+            ResultSet resultSet = statement.getGeneratedKeys();
             if(resultSet.next()) {
                 generatedKey = resultSet.getInt(1);
             }

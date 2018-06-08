@@ -1,6 +1,7 @@
 package com.javi.bowling.enums;
 
 public enum FrameType {
+    CURRENT,
     STRIKE,
     SPARE,
     OPEN;
