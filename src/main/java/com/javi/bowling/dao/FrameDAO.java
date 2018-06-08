@@ -151,6 +151,27 @@ public class FrameDAO implements IDAO<Frame> {
         return count + 1;
     }
 
+    public boolean isPlayerFinished(Game game, Player player) {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        boolean finished = false;
+        try {
+            String sql = "SELECT COUNT(*) FROM Frames WHERE game_id = ? AND player_id = ? AND frame_number = 10 AND frame_type != 'CURRENT'";
+            conn = DatabaseUtil.connect();
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, game.getId());
+            statement.setInt(2, player.getId());
+            ResultSet resultSet = statement.executeQuery();
+            finished = resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
+        }
+        return finished;
+    }
+
     public Frame createFrame(Game game, Player player) {
         Frame frame = new Frame();
         frame.setGame(game);

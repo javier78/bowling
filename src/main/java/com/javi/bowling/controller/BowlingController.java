@@ -62,6 +62,14 @@ public class BowlingController {
         Game game = gameDAO.findById(gameId);
 
         FrameDAO frameDAO = new FrameDAO();
+
+        if(frameDAO.isPlayerFinished(game, player)) {
+            JsonObject object = new JsonObject();
+            object.addProperty("error_message", "Player has already finished the game.");
+            String json = gson.toJson(object);
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(json);
+        }
+
         Frame currentFrame = frameDAO.getCurrentFrame(game, player);
         if(currentFrame == null) {
             currentFrame = frameDAO.createFrame(game, player);
