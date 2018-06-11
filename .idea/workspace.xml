@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dd97f8a9-75f3-459a-8360-4677a4456dd1" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/FrameController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/GameController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/PlayerController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/ShotController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/BowlingController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/FrameDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/FrameDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/GameDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/GameDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/ShotDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/ShotDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/javi/bowling/model/BowlingModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/javi/bowling/model/BowlingModel.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -54,11 +49,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/GameController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="29" column="7" lean-forward="true" selection-start-line="29" selection-start-column="7" selection-end-line="29" selection-end-column="7" />
+            <state relative-caret-position="327">
+              <caret line="60" column="62" lean-forward="true" selection-start-line="60" selection-start-column="62" selection-end-line="60" selection-end-column="62" />
             </state>
           </provider>
         </entry>
@@ -66,8 +61,8 @@
       <file leaf-file-name="ShotController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/ShotController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="52" lean-forward="true" selection-start-line="20" selection-start-column="4" selection-end-line="21" selection-end-column="52" />
+            <state relative-caret-position="226">
+              <caret line="46" column="25" selection-start-line="46" selection-start-column="25" selection-end-line="46" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -137,8 +132,8 @@
       <file leaf-file-name="BowlingModel.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/model/BowlingModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="103">
-              <caret line="186" column="83" selection-start-line="186" selection-start-column="83" selection-end-line="186" selection-end-column="83" />
+            <state relative-caret-position="307">
+              <caret line="174" column="28" selection-start-line="174" selection-start-column="28" selection-end-line="174" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -146,11 +141,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ShotDAO.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ShotDAO.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/ShotDAO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="134">
-              <caret line="171" column="16" selection-start-line="171" selection-start-column="16" selection-end-line="171" selection-end-column="16" />
+            <state relative-caret-position="297">
+              <caret line="109" column="47" lean-forward="true" selection-start-line="109" selection-start-column="47" selection-end-line="109" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#7617#7618#0" expanded="true" />
@@ -213,9 +208,7 @@
         <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/response/GameInfoResponse.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/model/DatabaseUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/model/Shot.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/ShotDAO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/enums/FrameType.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/model/BowlingModel.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/GameDAO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/FrameDAO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/PlayerController.java" />
@@ -223,6 +216,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/BowlingController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/FrameController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/GameController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/model/BowlingModel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/ShotDAO.java" />
       </list>
     </option>
   </component>
@@ -432,12 +427,12 @@
       <workItem from="1528391668783" duration="59000" />
       <workItem from="1528391753196" duration="1796000" />
       <workItem from="1528442407690" duration="2449000" />
-      <workItem from="1528482284309" duration="33749000" />
+      <workItem from="1528482284309" duration="34880000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63752000" />
+    <option name="totallyTimeSpent" value="64883000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="878" extended-state="0" />
@@ -455,16 +450,17 @@
       <window_info id="UI Designer" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.32832617" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="bottom" id="Java Enterprise" order="7" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Run Dashboard" order="8" sideWeight="0.49930555" visible="true" weight="0.3283582" />
+      <window_info active="true" anchor="bottom" id="Run Dashboard" order="8" sideWeight="0.49930555" visible="true" weight="0.3283582" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32587063" />
       <window_info anchor="bottom" id="Spring" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info anchor="right" id="Bean Validation" order="3" />
       <window_info id="Web" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -473,7 +469,6 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.32832617" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
@@ -682,16 +677,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/model/BowlingModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="186" column="83" selection-start-line="186" selection-start-column="83" selection-end-line="186" selection-end-column="83" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/GameDAO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-181">
@@ -700,18 +685,6 @@
             <element signature="imports" expanded="true" />
             <element signature="e#3767#3768#0" expanded="true" />
             <element signature="e#3795#3796#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/ShotDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="171" column="16" selection-start-line="171" selection-start-column="16" selection-end-line="171" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#7617#7618#0" expanded="true" />
-            <element signature="e#7645#7646#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -743,16 +716,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/ShotController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="52" lean-forward="true" selection-start-line="20" selection-start-column="4" selection-end-line="21" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/FrameController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
@@ -763,10 +726,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/ShotController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="46" column="25" selection-start-line="46" selection-start-column="25" selection-end-line="46" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/controller/GameController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="29" column="7" lean-forward="true" selection-start-line="29" selection-start-column="7" selection-end-line="29" selection-end-column="7" />
+        <state relative-caret-position="327">
+          <caret line="60" column="62" lean-forward="true" selection-start-line="60" selection-start-column="62" selection-end-line="60" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/model/BowlingModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="174" column="28" selection-start-line="174" selection-start-column="28" selection-end-line="174" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/javi/bowling/dao/ShotDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="109" column="47" lean-forward="true" selection-start-line="109" selection-start-column="47" selection-end-line="109" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7617#7618#0" expanded="true" />
+            <element signature="e#7645#7646#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

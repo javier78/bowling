@@ -33,7 +33,8 @@ public class BowlingModel {
             statement.setInt(1, game.getId());
             statement.setInt(2, player.getId());
             ResultSet resultSet = statement.executeQuery();
-            finished = resultSet.next();
+            resultSet.next();
+            return resultSet.getInt(1) == 1;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -88,6 +89,7 @@ public class BowlingModel {
             String sql = "SELECT * FROM Shots WHERE frame_id = ?";
             conn = DatabaseUtil.connect();
             statement = conn.prepareStatement(sql);
+            statement.setInt(1, frame.getId());
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()) {
                 Shot shot = new Shot();

@@ -99,12 +99,15 @@ public class ShotDAO implements IDAO<Shot> {
         List<Shot> shots = new ArrayList<>();
         try {
             conn = DatabaseUtil.connect();
+
             String sql = "SELECT Shots.* FROM Frames " +
                     "JOIN Shots ON (Shots.frame_id = Frames.id) " +
-                    "WHERE frame_number >= ? ORDER BY frame_number, shot_number LIMIT ?";
+                    "WHERE frame_number >= ? AND Frames.game_id = ? AND Frames.player_id = ? ORDER BY frame_number, shot_number LIMIT ?";
             statement = conn.prepareStatement(sql);
             statement.setInt(1, frame.getFrameNumber());
-            statement.setInt(2, shotsToReturn);
+            statement.setInt(2, frame.getGame().getId());
+            statement.setInt(3, frame.getPlayer().getId());
+            statement.setInt(4, shotsToReturn);
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()) {
                 Shot shot = new Shot();
