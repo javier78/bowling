@@ -42,9 +42,9 @@ public class ShotController extends BaseController {
         Game game = gameDAO.findById(gameId);
 
         if(player == null) {
-            generateErrorResponse("Invalid player id");
+            return generateErrorResponse("Invalid player id");
         } else if(game == null) {
-            generateErrorResponse("Invalid game id");
+            return generateErrorResponse("Invalid game id");
         }
 
         FrameDAO frameDAO = new FrameDAO();
