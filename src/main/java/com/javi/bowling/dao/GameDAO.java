@@ -58,6 +58,11 @@ public class GameDAO implements IDAO<Game> {
         return game;
     }
 
+    /**
+     * Determines whether a game has started by checking whether frames are associated with it.
+     * @param game the game to check
+     * @return true if there are frames associated with the game id, false otherwise.
+     */
     public boolean isGameStarted(Game game) {
         Connection conn = null;
         PreparedStatement statement = null;
@@ -109,6 +114,11 @@ public class GameDAO implements IDAO<Game> {
         return generatedKey;
     }
 
+    /**
+     * A game can never be updated, so this will always return false
+     * @param row The row object to be updated
+     * @return false
+     */
     @Override
     public boolean update(Game row) {
         return false;

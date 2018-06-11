@@ -151,6 +151,12 @@ public class FrameDAO implements IDAO<Frame> {
         return count + 1;
     }
 
+    /**
+     * Helper method for creating a frame
+     * @param game the game the new frame belongs to
+     * @param player the player the new frame belongs to
+     * @return the frame object with its id field populated to reflect the value in the database.
+     */
     public Frame createFrame(Game game, Player player) {
         Frame frame = new Frame();
         frame.setGame(game);
