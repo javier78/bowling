@@ -1,10 +1,20 @@
 package com.javi.bowling.enums;
 
 public enum FrameType {
-    CURRENT,
-    STRIKE,
-    SPARE,
-    OPEN;
+    CURRENT(1),
+    STRIKE(3),
+    SPARE(3),
+    OPEN(2);
+
+    int shotsToAdd;
+
+    FrameType(int shotsToAdd) {
+        this.shotsToAdd = shotsToAdd;
+    }
+
+    public int getShotsToAdd() {
+        return shotsToAdd;
+    }
 
     /**
      * Translates a String to a FrameType enum

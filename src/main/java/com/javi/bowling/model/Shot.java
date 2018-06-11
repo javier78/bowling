@@ -1,9 +1,15 @@
 package com.javi.bowling.model;
 
+import com.google.gson.annotations.Expose;
+
 public class Shot {
+    @Expose
     private int id;
+    @Expose(serialize = false)
     private Frame frame;
+    @Expose
     private int shotNumber;
+    @Expose
     private int shotValue;
 
     public int getId() {

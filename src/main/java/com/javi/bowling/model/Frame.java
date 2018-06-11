@@ -1,12 +1,18 @@
 package com.javi.bowling.model;
 
+import com.google.gson.annotations.Expose;
 import com.javi.bowling.enums.FrameType;
 
 public class Frame {
+    @Expose
     private int id;
+    @Expose(serialize = false)
     private Game game;
+    @Expose(serialize = false)
     private Player player;
+    @Expose
     private int frameNumber;
+    @Expose
     private FrameType frameType;
 
     public Player getPlayer() {

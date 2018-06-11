@@ -85,6 +85,63 @@ public class ShotDAO implements IDAO<Shot> {
         }
     }
 
+
+
+    /**
+     * Looks ahead and gets the next N shots, so a strike/spare may be calculated.
+     * @param frame The starting point, the shots of this frame will also be returned.
+     * @param shotsToReturn The number of shots to return.
+     * @return A list of Shot objects. List size should always be equal to shotsToReturn, unless a lookahead frame is CURRENT
+     */
+    public List<Shot> getNextNShots(Frame frame, int shotsToReturn) {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        List<Shot> shots = new ArrayList<>();
+        try {
+            conn = DatabaseUtil.connect();
+            String sql = "SELECT Shots.* FROM Frames " +
+                    "JOIN Shots ON (Shots.frame_id = Frames.id) " +
+                    "WHERE frame_number >= ? ORDER BY frame_number, shot_number LIMIT ?";
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, frame.getFrameNumber());
+            statement.setInt(2, shotsToReturn);
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+                Shot shot = new Shot();
+                shot.setId(resultSet.getInt("id"));
+                shot.setShotNumber(resultSet.getInt("shot_number"));
+                shot.setShotValue(resultSet.getInt("shot_value"));
+                shots.add(shot);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtils.closeQuietly(statement);
+            DbUtils.closeQuietly(conn);
+        }
+        return shots;
+    }
+
+//    public List<Shot> getNext2ShotsForStrike(Shot shot) {
+//        Connection conn = null;
+//        PreparedStatement statement = null;
+//        List<Shot> nextTwoShots = new ArrayList<>();
+//        try {
+//            conn = DatabaseUtil.connect();
+//            String sql = "SELECT * FROM Shots WHERE game_shot_number BETWEEN ? AND ?";
+//            statement = conn.prepareStatement(sql);
+//            statement.setInt(1, shot.getGameShotNumber() + 1);
+//            statement.setInt(2, shot.getGameShotNumber() + 2);
+//            ResultSet resultSet = statement.executeQuery();
+//            while(resultSet.next()) {
+//                Shot nextShot = new Shot();
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     public Shot findByFrameNumberAndShotNumber(Frame frame, int shotNumber) {
         Connection conn = null;
         PreparedStatement statement = null;

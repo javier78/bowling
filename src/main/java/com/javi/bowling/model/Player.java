@@ -1,8 +1,13 @@
 package com.javi.bowling.model;
 
+import com.google.gson.annotations.Expose;
+
 public class Player {
+    @Expose
     private int id;
+    @Expose
     private String name;
+    @Expose(serialize = false)
     private Game game;
 
     public int getId() {
