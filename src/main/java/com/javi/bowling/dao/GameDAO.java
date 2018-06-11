@@ -35,7 +35,7 @@ public class GameDAO implements IDAO<Game> {
     }
 
     public Game findById(int id) {
-        Game game = new Game();
+        Game game = null;
         Connection conn = null;
         PreparedStatement statement = null;
         try {
@@ -44,8 +44,10 @@ public class GameDAO implements IDAO<Game> {
             statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            game.setId(resultSet.getInt("id"));
+            if(resultSet.next()) {
+                game = new Game();
+                game.setId(resultSet.getInt("id"));
+            }
             if(resultSet.next()) {
                 System.out.println("This shouldn't return more than 1 record");
             }

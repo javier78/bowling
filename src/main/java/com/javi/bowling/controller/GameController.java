@@ -4,25 +4,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.javi.bowling.dao.FrameDAO;
 import com.javi.bowling.dao.GameDAO;
-import com.javi.bowling.dao.PlayerDAO;
-import com.javi.bowling.dao.ShotDAO;
-import com.javi.bowling.enums.FrameType;
-import com.javi.bowling.exception.GameAlreadyStartedException;
 import com.javi.bowling.model.*;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class GameController {
+public class GameController extends BaseController {
 
     private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     private BowlingModel model = new BowlingModel();
@@ -47,6 +40,9 @@ public class GameController {
     public ResponseEntity getScoreBoard(@RequestParam(value="game_id") int gameId) {
         GameDAO gameDAO = new GameDAO();
         Game game = gameDAO.findById(gameId);
+        if(game == null) {
+            return generateErrorResponse("Game id is invalid");
+        }
         List<Player> players = model.getPlayersInGame(game);
         JsonArray playerArray = new JsonArray();
         for(Player player : players) {

@@ -54,16 +54,17 @@ public class ShotDAO implements IDAO<Shot> {
             statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
+            if(resultSet.next()) {
+                FrameDAO frameDAO = new FrameDAO();
+                Frame frame = frameDAO.findById(resultSet.getInt("frame_id"));
 
-            FrameDAO frameDAO = new FrameDAO();
-            Frame frame = frameDAO.findById(resultSet.getInt("frame_id"));
+                shot = new Shot();
+                shot.setId(resultSet.getInt("id"));
+                shot.setFrame(frame);
+                shot.setShotValue(resultSet.getInt("shot_value"));
+                shot.setShotNumber(resultSet.getInt("shot_number"));
+            }
 
-            shot = new Shot();
-            shot.setId(resultSet.getInt("id"));
-            shot.setFrame(frame);
-            shot.setShotValue(resultSet.getInt("shot_value"));
-            shot.setShotNumber(resultSet.getInt("shot_number"));
 
             if(resultSet.next()) {
                 System.out.println("This shouldn't return more than 1 record.");

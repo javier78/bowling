@@ -50,7 +50,7 @@ public class FrameDAO implements IDAO<Frame> {
 
     @Override
     public Frame findById(int id) {
-        Frame frame = new Frame();
+        Frame frame = null;
         Connection conn = null;
         PreparedStatement statement = null;
         try {
@@ -59,8 +59,10 @@ public class FrameDAO implements IDAO<Frame> {
             statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            frame.setId(resultSet.getInt("id"));
+            if(resultSet.next()) {
+                frame = new Frame();
+                frame.setId(resultSet.getInt("id"));
+            }
 
             PlayerDAO playerDAO = new PlayerDAO();
             Player player = playerDAO.findById(resultSet.getInt("player_id"));

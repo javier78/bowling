@@ -9,7 +9,6 @@ import com.javi.bowling.dao.PlayerDAO;
 import com.javi.bowling.dao.ShotDAO;
 import com.javi.bowling.enums.FrameType;
 import com.javi.bowling.model.*;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ShotController {
+public class ShotController extends BaseController {
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     private BowlingModel model = new BowlingModel();
 
@@ -42,19 +41,20 @@ public class ShotController {
         GameDAO gameDAO = new GameDAO();
         Game game = gameDAO.findById(gameId);
 
+        if(player == null) {
+            generateErrorResponse("Invalid player id");
+        } else if(game == null) {
+            generateErrorResponse("Invalid game id");
+        }
+
         FrameDAO frameDAO = new FrameDAO();
 
         if(model.isGameFinished(game)) {
-            JsonObject object = new JsonObject();
-            object.addProperty("error_message", "All players have finished the game.");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(gson.toJson(object));
+            return generateErrorResponse("All players have finished the game.");
         }
 
         if(model.isPlayerFinished(game, player)) {
-            JsonObject object = new JsonObject();
-            object.addProperty("error_message", "Player has already finished the game.");
-            String json = gson.toJson(object);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(json);
+            return generateErrorResponse("Player has already finished the game.");
         }
 
         Frame currentFrame = frameDAO.getCurrentFrame(game, player);
@@ -69,18 +69,14 @@ public class ShotController {
             try {
                 handleStandardFrame(shotDAO, shot, frameDAO, currentFrame);
             } catch (IllegalArgumentException e) {
-                JsonObject object = new JsonObject();
-                object.addProperty("error_message", e.getMessage());
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(gson.toJson(object));
+                return generateErrorResponse(e.getMessage());
             }
         }
         else {
             try {
                 handleTenthFrame(shotDAO, shot, frameDAO, currentFrame);
             } catch(IllegalArgumentException e) {
-                JsonObject object = new JsonObject();
-                object.addProperty("error_message", e.getMessage());
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(gson.toJson(object));
+                return generateErrorResponse(e.getMessage());
             }
         }
         String json = gson.toJson(currentFrame);

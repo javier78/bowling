@@ -148,7 +148,7 @@ public class BowlingModel {
 
     /**
      * Returns the current score for a player.
-     * @param player
+     * @param player the player to look up
      * @return An up-to-date score for a player
      */
     public int getScoreForPlayer(Game game, Player player) {
@@ -197,12 +197,4 @@ public class BowlingModel {
         }
         return true;
     }
-//    public ArrayList<Frame> getFramesInGame() {
-//        Connection conn = null;
-//        PreparedStatement statement = null;
-//        ArrayList<Frame> frames = new ArrayList<>();
-//        try {
-//            String sql = "SELECT ";
-//        }
-//    }
 }

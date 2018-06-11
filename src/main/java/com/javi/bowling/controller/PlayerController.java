@@ -9,7 +9,6 @@ import com.javi.bowling.exception.GameAlreadyStartedException;
 import com.javi.bowling.model.BowlingModel;
 import com.javi.bowling.model.Game;
 import com.javi.bowling.model.Player;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class PlayerController {
+public class PlayerController extends BaseController {
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     private BowlingModel model = new BowlingModel();
     /**
@@ -26,11 +25,17 @@ public class PlayerController {
      * @return JSON representation of the score for the player.
      */
     @RequestMapping(value = "/player_score", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity getPlayerScore(@RequestParam(value="player_id") int playerId) {
+    public ResponseEntity getPlayerScore(@RequestParam(value="game_id") int gameId,
+                                         @RequestParam(value="player_id") int playerId) {
         PlayerDAO playerDAO = new PlayerDAO();
         GameDAO gameDAO = new GameDAO();
         Player player = playerDAO.findById(playerId);
-        Game game = gameDAO.findById(player.getId());
+        Game game = gameDAO.findById(gameId);
+        if(game == null) {
+            return generateErrorResponse("Invalid game id");
+        } else if(player == null) {
+            return generateErrorResponse("Invalid player id");
+        }
         int score = model.getScoreForPlayer(game, player);
         JsonObject scoreJson = new JsonObject();
         scoreJson.addProperty("player_score", score);
@@ -53,10 +58,7 @@ public class PlayerController {
             player = dao.createPlayer(name, gameId);
         } catch (GameAlreadyStartedException e) {
             e.printStackTrace();
-            JsonObject object = new JsonObject();
-            object.addProperty("error_message", e.getMessage());
-            String json = gson.toJson(object);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(json);
+            return generateErrorResponse(e.getMessage());
         }
         String json = gson.toJson(player);
         return ResponseEntity.ok(json);

@@ -39,7 +39,7 @@ public class PlayerDAO implements IDAO<Player> {
 
     @Override
     public Player findById(int id) {
-        Player player = new Player();
+        Player player = null;
         Connection conn = null;
         PreparedStatement statement = null;
         try {
@@ -48,9 +48,11 @@ public class PlayerDAO implements IDAO<Player> {
             statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            player.setId(resultSet.getInt("id"));
-            player.setName(resultSet.getString("name"));
+            if(resultSet.next()) {
+                player = new Player();
+                player.setId(resultSet.getInt("id"));
+                player.setName(resultSet.getString("name"));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

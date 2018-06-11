@@ -7,7 +7,7 @@
       <imported>true</imported>
       <remarks>SQLite</remarks>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\Javier\IdeaProjects\bowling\bowling.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\Javier\IdeaProjects\bowling\bowling.sqlite</jdbc-url>
       <driver-properties>
         <property name="enable_load_extension" value="true" />
       </driver-properties>

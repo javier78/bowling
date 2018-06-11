@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class FrameController {
+public class FrameController extends BaseController {
     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     private BowlingModel model = new BowlingModel();
 
@@ -34,6 +34,11 @@ public class FrameController {
         PlayerDAO playerDAO = new PlayerDAO();
         Game game = gameDAO.findById(gameId);
         Player player = playerDAO.findById(playerId);
+        if(game == null) {
+            return generateErrorResponse("Invalid game id");
+        } else if(player == null) {
+            return generateErrorResponse("Invalid player id");
+        }
         List<Frame> frames = model.getFramesForPlayer(game, player);
         String json = gson.toJson(frames);
         return ResponseEntity.ok(json);
