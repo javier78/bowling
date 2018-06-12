@@ -54,8 +54,14 @@ public class PlayerController extends BaseController {
                                        @RequestParam(value="game") int gameId) {
         PlayerDAO dao = new PlayerDAO();
         Player player = null;
+
+        GameDAO gameDAO = new GameDAO();
+        Game game = gameDAO.findById(gameId);
+        if(game == null) {
+            return generateErrorResponse("Invalid game id");
+        }
         try {
-            player = dao.createPlayer(name, gameId);
+            player = dao.createPlayer(name, game);
         } catch (GameAlreadyStartedException e) {
             e.printStackTrace();
             return generateErrorResponse(e.getMessage());

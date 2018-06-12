@@ -31,9 +31,8 @@ public class ShotController extends BaseController {
     public ResponseEntity takeShot(@RequestParam(value="game") int gameId,
                                    @RequestParam(value="player") int playerId,
                                    @RequestParam(value="pins_knocked_down") int pinsKnockedDown) {
-        if(pinsKnockedDown > 10) {
-            JsonObject object = new JsonObject();
-            object.addProperty("error_message", "More than 10 pins cannot be knocked down in a turn.");
+        if(pinsKnockedDown > 10 || pinsKnockedDown < 0) {
+            return generateErrorResponse("Pins knocked down must be between 0 and 10.");
         }
         PlayerDAO playerDAO = new PlayerDAO();
         Player player = playerDAO.findById(playerId);

@@ -62,9 +62,8 @@ public class PlayerDAO implements IDAO<Player> {
         return player;
     }
 
-    public Player createPlayer(String name, int gameId) throws GameAlreadyStartedException {
+    public Player createPlayer(String name, Game game) throws GameAlreadyStartedException {
         GameDAO gameDAO = new GameDAO();
-        Game game = gameDAO.findById(gameId);
         if(!gameDAO.isGameStarted(game)) {
             Player player = new Player();
             player.setName(name);
