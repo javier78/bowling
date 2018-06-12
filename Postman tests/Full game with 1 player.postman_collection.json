@@ -1,0 +1,1134 @@
+{
+	"info": {
+		"_postman_id": "a76575df-37c9-48ff-9fb7-b4c8dd4f0907",
+		"name": "Full game with 1 player",
+		"description": "This will mirror the game that was linked in the instructions.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create game",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c65f60a0-ef0c-4a84-bf1c-69b3064f3d34",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"gameId\", jsonData.id);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/game",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"game"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add player 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6992d4cd-51f8-415f-87fe-85c8627e5f6a",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"player1\", jsonData.id);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "javi",
+							"type": "text"
+						},
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/player",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 strike",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "028c1bc2-9269-4283-a947-56beeb7db942",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "10",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 spare pt 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2d1e3570-3ceb-4438-8c34-896c29d02457",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "7",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 spare pt 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "46d8d0dc-ee16-4ee1-ac45-751b1cfc480c",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 1 frame 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f27478f1-3b8a-40ca-b5eb-06780e09c3a7",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "7",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 2 frame 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1f69f687-9ea5-4068-8352-394726bc388b",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "2",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 1 frame 4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4b6dfa9c-0bad-47ff-b973-0a9c79ec49f0",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "9",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 2 frame 4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d39a3a34-a19d-4e33-a7ee-0ae3235f266d",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "1",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 1 frame 5",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ebc79460-961b-423b-9db1-1de27ffaf109",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "10",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 1 frame 6",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "da754a09-8be2-419d-b3e9-8dc4e27a518c",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "10",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 1 frame 7",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "990636b2-4c05-4c7a-ae57-298f63551e23",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "10",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 1 frame 8",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b1cf56e5-9c46-4b43-9012-b8f5aa1cd197",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "2",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 2 frame 8",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "58e196ae-a651-434c-b19c-e8708580e27f",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 1 frame 9",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "72c33748-17e3-4685-8a78-96d272715324",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "6",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 2 frame 9",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c1dc62b2-1d1c-4cb6-9634-69572a739908",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "4",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 1 frame 10",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b0e0f17c-d2ac-43df-b00a-f869d35a98c7",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "7",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 2 frame 10",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "679d7da7-6230-4f74-838a-c0d29e1acfe5",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 shot 3 frame 10",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a3bde3c-3726-484a-8bad-c0892c567f48",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "display final board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4efbc3ed-9619-4029-98ea-58e8fa5c239e",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/game?game_id={{gameId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"game"
+					],
+					"query": [
+						{
+							"key": "game_id",
+							"value": "{{gameId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "22c80e42-3ef7-44d0-a354-8922cef85945",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0f16e7ab-b924-497a-97c2-49cecf764abc",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

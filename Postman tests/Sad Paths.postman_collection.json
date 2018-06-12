@@ -1,0 +1,537 @@
+{
+	"info": {
+		"_postman_id": "fe472ef6-294f-4353-9c32-94020d43f841",
+		"name": "Sad Paths",
+		"description": "A bunch of different error cases where game ids are null, player ids are null, etc.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create game",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c65f60a0-ef0c-4a84-bf1c-69b3064f3d34",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"gameId\", jsonData.id);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/game",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"game"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add player 1 invalid game id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b731b3d1-adeb-4516-bc5e-0c54dc49e3f8",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "nico",
+							"type": "text"
+						},
+						{
+							"key": "game",
+							"value": "-1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/player",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add player 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a4f98809-9078-49be-b878-c2cc41fd3dc9",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"player1\", jsonData.id);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "nico",
+							"type": "text"
+						},
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/player",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 more than 10 pins knocked down",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "526ffe72-f860-49d4-90b7-e488f1bcc00a",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Knocking down 11 pins should return HTTP 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "11",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 less than 0 pins knocked down",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7e28b6b5-3df0-4b80-af6c-3dbf9e12a092",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Knocking down -1 pins should return HTTP 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "-1",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 take shot without game id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c0a12459-86b6-4315-ba46-7661b1e25209",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Not supplying a game id should return HTTP 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "-1",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 take shot without player id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a5d77d75-59ff-4868-9f98-f1bef2c5570c",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Not supplying a player id should return HTTP 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "-1",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player 1 take shot without player id Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "698dc036-9f94-4744-9938-5514ee580afd",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Valid shot, should return HTTP 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/shot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "display board after errors",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5a55a5d8-c105-49d6-826f-7bd1253ebc83",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200, board should be empty\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "player",
+							"value": "{{player1}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "pins_knocked_down",
+							"value": "3",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/game?game_id={{gameId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"game"
+					],
+					"query": [
+						{
+							"key": "game_id",
+							"value": "{{gameId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add player 2 after game has started",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1425d38f-dcab-4473-b252-52784ae73afc",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Game started, additional players cannot be added. Should return HTTP 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "javier",
+							"type": "text"
+						},
+						{
+							"key": "game",
+							"value": "{{gameId}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/player",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player"
+					]
+				},
+				"description": "Game started, additional players cannot be added."
+			},
+			"response": []
+		}
+	]
+}
